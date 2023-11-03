@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import current_user
+from .models import *
+from . import db
 
 auth = Blueprint('auth', __name__)
 
@@ -16,14 +18,17 @@ def register():
             flash('Email must contain more than three characters', category ='error')
         elif len(name) < 2:
             flash('Name must contain more than two characters', category ='error')
-        elif password != password2:
+        elif password1 != password2:
             flash('Passwords do not match', category ='error')
-        elif len(password) < 6:
+        elif len(password1) < 6:
             flash('Password must contain more than six characters', category ='error')
 
         else:
             flash('Success! Your account has been created', category='success')
             #add user to db
+            user = User(id=0,email=email,name=name,password=password1)
+            db.session.add(user)
+            db.session.commit()
             
             
     return render_template("register.html", user=current_user)
