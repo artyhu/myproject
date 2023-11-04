@@ -12,13 +12,18 @@ class User(db.Model, UserMixin):
     
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    info = db.Column(db.String(9999))
-    date = db.Column(db.DateTime(timezone=True), default=func.now)
+    name = db.Column(db.String(120))
+    assignee = db.Column(db.String(120))
+    description = db.Column(db.String(9999))
+    start_date = db.Column(db.DateTime(timezone=True), default=func.now)
+    deadline = db.Column(db.DateTime(timezone=True), default=func.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    info = db.Column(db.String(9999))
-    date = db.Column(db.DateTime(timezone=True), default=func.now)
+    name = db.Column(db.String(120))
+    start_date = db.Column(db.DateTime(timezone=True), default=func.now)
+    deadline = db.Column(db.DateTime(timezone=True), default=func.now)
+    description = db.Column(db.String(9999))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    task_id = db.Column(db.String, db.ForeignKey('task.id'))
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'))

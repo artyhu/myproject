@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
-from .models import User
+from .models import User, Task, Project
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
+from datetime import datetime
 
 auth = Blueprint('auth', __name__)
 
@@ -65,15 +66,77 @@ def taskManager():
 def projectManager():
     return render_template("projectManager.html", user=current_user)
 
-@auth.route('/newtask')
-def newTask():
+@auth.route('/newtask', methods=['GET', 'POST'])
+def new_task():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        assignee = request.form.get('assignee')
+        description = request.form.get('description')
+        start_date = request.form.get('start_date')
+        deadline = request.form.get('deadline')
+
+        if not name:
+            flash('Task name is required', category='error')
+        elif not start_date:
+            flash('Start date is required', category='error')
+        elif not deadline:
+            flash('Deadline is required', category='error')
+        else:
+            # Convert date strings to datetime objects (sql will only accept like this)
+            start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            deadline = datetime.strptime(deadline, '%Y-%m-%d')
+            new_task = Task(
+                name=name,
+                assignee=assignee,
+                description=description,
+                start_date=start_date,
+                deadline=deadline,
+                user_id=current_user.id
+            )
+
+            db.session.add(new_task)
+            db.session.commit()
+
+            flash(f'New task "{name}" created successfully', category='success')
+            return redirect(url_for('auth.taskManager'))
+
     return render_template("newTask.html", user=current_user)
 
-@auth.route('/newproject')
-def newProject():
+@auth.route('/newproject', methods=['GET', 'POST'])
+def new_project():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        start_date = request.form.get('start_date')
+        deadline = request.form.get('deadline')
+        description = request.form.get('description')
+
+        if not name:
+            flash('Project name is required', category='error')
+        elif not start_date:
+            flash('Start date is required', category='error')
+        elif not deadline:
+            flash('Deadline is required', category='error')
+        else:
+            # Convert date strings to datetime objects (sql will only accept like this)
+            start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            deadline = datetime.strptime(deadline, '%Y-%m-%d')
+
+            new_project = Project(
+                name=name,
+                start_date=start_date,
+                deadline=deadline,
+                description=description,
+                user_id=current_user.id,  # Assuming you use Flask-Login to get the current user
+                task_id=None  # You can set task_id as needed
+            )
+
+            db.session.add(new_project)
+            db.session.commit()
+
+            flash(f'New project "{name}" created successfully', category='success')
+            return redirect(url_for('auth.projectManager'))
+
     return render_template("newProject.html", user=current_user)
-
-
 @auth.route('/logout')
 @login_required
 def logout():

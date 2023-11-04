@@ -6,17 +6,17 @@
     <h3 align="center">New Task</h3>
     <div class="container">
     <hr>
-    <center>	
-                <input type="text" id="name" placeholder="Task Name">
-                <input type="text" id="name" placeholder="Assignee">
-                <label for="sdate">Start date:</label>
-                <input type="date" id="sDate">
+    <center>
+                <input type="text" id="name" name="name" placeholder="Task Name">
+                <input type="text" id="name" name="name" placeholder="Assignee">
+                <label for="sDate">Start date:</label>
+                <input type="date" id="sDate" name="start_date">
                 <label for="deadline">Deadline:</label>
-                <input type="date" id="deadline">
+                <input type="date" id="deadline" name="deadline">
     </div></center>
         <center>
             <textarea id="description" placeholder="Description of Task" cols="30" rows="10" onClick="myObj.textSelect(this)"> Description of Task</textarea>
-              
+
 
             </div>
             </div></center>
@@ -32,7 +32,7 @@
     <script src="src/ObjectApp.js"></script>
     </center>
     </body>
-    
+
 </html>
 
 {% endblock %}
