@@ -79,3 +79,8 @@ def newProject():
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
+
+@auth.route('/view_users')
+def view_users():
+    users = User.query.all()
+    return render_template('view_users.html', user=current_user, users=users)
