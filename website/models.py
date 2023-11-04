@@ -7,7 +7,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(50), unique = True)
     name = db.Column(db.String(50))
     password = db.Column(db.String(50))
-    
+    tasks = db.relationship('Task')
+    projects = db.relationship('Project')
     
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)

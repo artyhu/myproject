@@ -33,14 +33,16 @@
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
                     <a class="nav-item nav-link" id="homepage" href="/">Homepage</a>
-                    <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-                    {% else %}
-                    <a class="nav-item nav-link" id="login" href="/login">Login</a>
-                    <a class="nav-item nav-link" id="register" href="/register">Register</a>
                     <a class="nav-item nav-link" id="taskmanager" href="/taskmanager">Task Manager</a>
                     <a class="nav-item nav-link" id="projectmanager" href="/projectmanager">Project Manager</a>
                     <a class="nav-item nav-link" id="newtask" href="/newtask">New Task</a>
                     <a class="nav-item nav-link" id="newproject" href="/newproject">New Project</a>
+                    <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+
+                    {% else %}
+                    <a class="nav-item nav-link" id="login" href="/login">Login</a>
+                    <a class="nav-item nav-link" id="register" href="/register">Register</a>
+
 
 
                     {% endif %}
