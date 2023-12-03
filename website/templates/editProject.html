@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Edit Project{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <h3 align="center">Edit Project</h3>
+    <div class="container">
+    <hr>
+    <center>	
+                <input type="text" id="name" name="name" placeholder="Project Name">
+                <label for="sdate">Start date:</label>
+                <input type="date" id="sdate" name="sdate">
+                <label for="deadline">Deadline:</label>
+                <input type="checkbox" id="use-deadline" name="use-deadline" onclick="toggleDeadline(this);">
+                <input type="date" id="deadline" name="deadline" style="display: none;">
+    </div></center>
+        <center>
+            <textarea id="description" name="description" placeholder="Description of Project" cols="30" rows="10" onClick="myObj.textSelect(this)"> Description of Project</textarea>
+              
+
+            </div>
+            </div></center>
+
+
+            <center>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary">Create Tasks</button>
+                <button type="button" class="btn btn-primary">Assign Tasks</button>
+                <button type="button" class="btn btn-primary">Assign Team Roles</button>
+                <button type="button" class="btn btn-primary">Set Priority</button>
+                </form>
+            </section>
+        </center>
+
+        <script>
+            function getCurrentDate() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const day = now.getDate().toString().padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            document.getElementById("sdate").value = getCurrentDate(); //default start date
+
+            function toggleDeadline(checkbox) {
+                deadline_box = document.getElementById("deadline")
+                console.log(deadline_box.value)
+                if (checkbox.checked) {
+                    deadline_box.style="display: inline;"
+                }
+                else {
+                    deadline_box.style="display: none;"
+                }
+            }
+        </script>
+</html>
+
+{% endblock %}

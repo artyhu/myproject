@@ -4,6 +4,7 @@ from .models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from datetime import datetime
+from sqlalchemy import update
 auth = Blueprint('auth', __name__)
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -169,6 +170,18 @@ def new_project():
 
     return render_template("newProject.html", user=current_user)
 
+@auth.route('/editproject/<project_id>', methods=['GET','POST'])
+@login_required
+def edit_project(project_id):
+    edit_project = Project.query.filter_by(id=project_id).first()
+    if request.method == 'POST':
+        name = request.form.get('name')
+        start_date = request.form.get('sdate')
+        use_deadline = request.form.get('use-deadline')
+        deadline = request.form.get('deadline')
+        description = request.form.get('description')
+    db.session.commit()
+    return render_template('editProject.html', user = current_user, project_id = project_id)
 
 @auth.route('/logout')
 @login_required
