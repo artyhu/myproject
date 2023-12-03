@@ -119,7 +119,7 @@ def new_project():
 @auth.route('/editproject/<project_id>', methods=['GET','POST'])
 @login_required
 def edit_project(project_id):
-    project_id = Project.query.filter_by(id=project_id).first()
+    edit_project = Project.query.filter_by(id=project_id).first()
     if request.method == 'POST':
         name = request.form.get('name')
         start_date = request.form.get('sdate')
@@ -138,11 +138,11 @@ def edit_project(project_id):
             deadline = datetime.strptime(deadline, '%Y-%m-%d') if deadline else datetime.strptime('9999-12-31','%Y-%m-%d')
 
             
-            Project.name=name,
-            Project.start_date=start_date,
-            Project.deadline=deadline,
-            Project.description=description,
-            Project.users=[current_user],  # Assuming you use Flask-Login to get the current user
+            edit_project.name=name,
+            edit_project.start_date=start_date,
+            edit_project.deadline=deadline,
+            edit_project.description=description,
+            edit_project.users=[current_user],  # Assuming you use Flask-Login to get the current user
 
         db.session.commit()
     return render_template('editProject.html', user = current_user, project_id = project_id)
